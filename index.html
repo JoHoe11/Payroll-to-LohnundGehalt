@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G2N-Lodas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dornbach.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Home button at top left -->
+    <a href="/" class="back-button">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <div class="app-container">
+        <!-- Header with G2N - Lodders -->
+        <header class="text-center mt-xl mb-xl">
+            <h1 class="text-white">G2N - Lodas</h1>
+        </header>
+        
+        <main class="app-content">
+            <section class="input-section mt-lg">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Eingabedaten</h2>
+                        </div>
+                        
+                        <div class="card-body p-xl">
+                            <div class="form-group">
+                                <label for="bAVspecialcode" class="form-label">bAV special code (kommagetrennt):</label>
+                                <input type="text" id="bAVspecialcode" class="form-control" placeholder="z.B. 101,102,103">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="NBAspecialcode" class="form-label">NBA special code (kommagetrennt):</label>
+                                <input type="text" id="NBAspecialcode" class="form-control" placeholder="z.B. 9001,9002,9003">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="outputFilename" class="form-label">Ausgabedateiname:</label>
+                                <input type="text" id="outputFilename" class="form-control" placeholder="G2N_Ausgabe.xlsx">
+                            </div>
+
+                            <div class="upload-section mt-lg">
+                                <h4>Dateien hochladen</h4>
+                                <div class="file-inputs">
+                                    <div class="form-group mb-md">
+                                        <label class="form-label">LA TXT-Datei:</label>
+                                        <div class="file-upload-container">
+                                            <div class="file-upload">
+                                                <div class="file-upload-text">
+                                                    <i class="fas fa-file-alt"></i>
+                                                    <span>TXT-Datei auswählen</span>
+                                                </div>
+                                                <input type="file" id="lohnjournalFile" accept=".txt">
+                                            </div>
+                                            <div class="file-status">
+                                                <span class="selected-file" id="lohnjournalFileName">Keine Datei ausgewählt</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">SD TXT-Datei:</label>
+                                        <div class="file-upload-container">
+                                            <div class="file-upload">
+                                                <div class="file-upload-text">
+                                                    <i class="fas fa-file-alt"></i>
+                                                    <span>TXT-Datei auswählen</span>
+                                                </div>
+                                                <input type="file" id="personalkostenFile" accept=".txt">
+                                            </div>
+                                            <div class="file-status">
+                                                <span class="selected-file" id="personalkostenFileName">Keine Datei ausgewählt</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button id="startButton" class="btn btn-primary mt-lg">
+                                <i class="fas fa-play"></i>
+                                Verarbeitung starten
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="progress-section hidden" id="progressContainer">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="section-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <h2>Verarbeitung</h2>
+                        </div>
+                        <div class="card-body p-xl">
+                            <div class="g2n-progress">
+                                <div id="progressBar" class="g2n-progress-bar" style="width: 0%"></div>
+                            </div>
+                            <p id="statusLabel">Warte auf Start...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="result-section hidden" id="resultContainer">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="section-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h2>Ergebnis</h2>
+                        </div>
+                        <div class="card-body p-xl">
+                            <p id="resultMessage"></p>
+                            <a id="downloadLink" class="btn btn-primary">
+                                <i class="fas fa-download"></i>
+                                Excel-Datei herunterladen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-bottom">
+                    <div class="copyright">
+                        <p>&copy; 2025 Dornbach GmbH. Alle Rechte vorbehalten.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Help button at bottom right -->
+    <button class="help-button" id="helpBtn">
+        <i class="fas fa-question"></i>
+    </button>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <h3>Hilfe anfordern</h3>
+            <p>Bitte laden Sie einen Screenshot hoch und beschreiben Sie Ihr Problem.</p>
+            
+            <!-- Status messages -->
+            <div id="statusSuccess" class="status-message status-success">
+                Ihre Anfrage wurde erfolgreich gesendet!
+            </div>
+            
+            <div id="statusError" class="status-message status-error">
+                Beim Senden Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.
+            </div>
+            
+            <div id="statusLoading" class="status-loading">
+                <div class="loading-spinner"></div>
+                <span>Senden...</span>
+            </div>
+            
+            <form id="helpForm" action="https://formsubmit.co/6b0ba1f4122a49d2e772afa108f83571" method="POST" enctype="multipart/form-data">
+                <!-- Hidden fields for FormSubmit configuration -->
+                <input type="hidden" name="_subject" value="Papaya Hilfe-Anfrage">
+                <input type="hidden" name="_cc" value="ckomma@dornbach.de,rtruebenbach@dornbach.de">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" value="http://apps.dornbach.cloud/Papaya/LohnG2NExcel/">
+                
+                <div class="form-group">
+                    <label for="screenshot">Screenshot hochladen</label>
+                    <div class="file-upload">
+                        <div class="file-upload-text">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Klicken Sie hier, um einen Screenshot hochzuladen</span>
+                        </div>
+                        <input type="file" id="screenshot" name="attachment" accept="image/*">
+                    </div>
+                    <img id="previewImage" class="preview-image" alt="Vorschau">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Problembeschreibung</label>
+                    <textarea id="description" name="Problembeschreibung" class="form-control" rows="4" placeholder="Beschreiben Sie Ihr Problem hier..." required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="submitButton">Hilfe senden</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js" type="module"></script>
+    <script src="ui.js" type="module"></script>
+    <script src="help.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+    "name": "g2nlohngehalt",
+    "version": "2.0.0",
+    "description": "txt->xlsx",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "author": "JH11",
+    "license": "MIT",
+    "devDependencies": {
+        "sass": "^1.62.1",
+        "vite": "^6.3.5"
+    },
+    "dependencies": {
+        "date-fns": "^2.30.0"
+    }
+}
+
